@@ -8,7 +8,7 @@ Labelled Optimal Partitioning
 #+BEGIN_SRC R
 install.packages("LOPART")
 ## OR
-devtools::install_github("tdhock/LOPART")
+devtools::install_github("jkaufy/POISSON_LOPART")
 #+END_SRC
 
 ** Usage
