@@ -9,6 +9,7 @@
 
 int LOPART
 (double *input_data,
+ double *input_weight,
  int n_data, //N in paper
  int *input_label_start,
  int *input_label_end,
@@ -19,6 +20,7 @@ int LOPART
  int n_updates,//size of out_ arrays and number of dp updates.
  //inputs above, outputs below.
  double *out_cumsum,//for computing optimal cost of a segment.
+ double *out_weighted_data_cumsum,
  int *out_change_candidates,//T_t
  double *out_cost_candidates,// for visualization.
  double *out_cost, //out_cost[t-1] = W_t in paper, for t=1 to N.

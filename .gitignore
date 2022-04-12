@@ -1,3 +1,5 @@
 *~
 *.o
 *.so
+.Rproj.user
+POISSON_LOPART.Rproj

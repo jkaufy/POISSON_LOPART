@@ -26,7 +26,7 @@
 ##'   changes in positive labels. 
 ##' @example inst/examples/LOPART.R
 LOPART <- function
-(x, labels, penalty_unlabeled,
+(x, weights, labels, penalty_unlabeled,
   n_updates=length(x),
   penalty_labeled=penalty_unlabeled
 ){
@@ -47,6 +47,7 @@ LOPART <- function
   }
   out_df <- LOPART_interface(
     x,
+    weights,
     labels$start-1L,
     labels$end-1L,
     labels$changes,

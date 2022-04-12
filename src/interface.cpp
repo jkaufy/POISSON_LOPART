@@ -30,6 +30,7 @@
 // [[Rcpp::export]]
 Rcpp::DataFrame LOPART_interface
 (Rcpp::NumericVector input_data,
+ Rcpp::NumericVector input_weight,
  Rcpp::IntegerVector input_label_start,
  Rcpp::IntegerVector input_label_end,
  Rcpp::IntegerVector input_label_changes,
@@ -46,6 +47,7 @@ Rcpp::DataFrame LOPART_interface
     Rcpp::stop("input_label_end and input_label_changes sizes must match");
   }
   Rcpp::NumericVector out_cumsum(n_updates);
+  Rcpp::NumericVector out_weighted_data_cumsum(n_updates);
   Rcpp::IntegerVector out_change_candidates(n_updates);
   Rcpp::NumericVector out_cost_candidates(n_updates);
   Rcpp::NumericVector out_cost(n_updates);
@@ -53,6 +55,7 @@ Rcpp::DataFrame LOPART_interface
   Rcpp::IntegerVector out_last_change(n_updates);
   int status = LOPART
     (&input_data[0],
+     &input_weight[0],
      n_data,
      &input_label_start[0],
      &input_label_end[0],
@@ -63,6 +66,7 @@ Rcpp::DataFrame LOPART_interface
      n_updates,
      //inputs above, outputs below.
      &out_cumsum[0],
+     &out_weighted_data_cumsum[0],
      &out_change_candidates[0],
      &out_cost_candidates[0],
      &out_cost[0],

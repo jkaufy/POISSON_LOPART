@@ -14,6 +14,7 @@ double sum_from_to(double *out_cumsum, int first, int last){
 
 int LOPART
 (double *input_data,
+ double *input_weight,
  int n_data, //N in paper
  int *input_label_start,
  int *input_label_end,
@@ -24,6 +25,7 @@ int LOPART
  int n_updates,//size of out_ arrays and number of dp updates.
  //inputs above, outputs below.
  double *out_cumsum,//for computing optimal cost of a segment.
+ double *out_weighted_data_cumsum,
  int *out_change_candidates,//T_t
  double *out_cost_candidates,// for visualization.
  double *out_cost, //out_cost[t-1] = W_t in paper, for t=1 to N.
@@ -60,15 +62,24 @@ int LOPART
     }
   }
   // initialize cumsum vector.
-  double total = 0.0;
+  double total_weight = 0.0;
+  double total_weighted_data = 0.0;
+  
+  
   for(int t=0; t<n_updates; t++){
     if(-INFINITY < input_data[t] && input_data[t] < INFINITY){
-      total += input_data[t];
-      out_cumsum[t] = total;
+      total_weight += input_weight[t];
+      out_cumsum[t] = total_weight;
+      
+      total_weighted_data += input_weight[t] * input_data[t];
+      out_weighted_data_cumsum[t] = total_weighted_data;
+      
     }else{
       return ERROR_DATA_MUST_BE_FINITE;
     }
   }
+  
+  
   int n_change_candidates = 0;//DP initialization.
   int current_label_j = 0;
   int current_label_changes = UNLABELED;
@@ -109,10 +120,13 @@ int LOPART
 	int change_candidate = out_change_candidates[candidate_i];
 	// sum_i (x_i - m)^2 =
 	// [sum_i x_i^2] - [2 m sum_i x_i] + [sum_i m^2]
-	double total = sum_from_to(out_cumsum, change_candidate+1, t);
-	int seg_size = t-change_candidate;
+	
+	
+	double total = sum_from_to(out_weighted_data_cumsum, change_candidate+1, t);
+	double seg_size = sum_from_to(out_cumsum, change_candidate+1, t);
+	
 	double seg_mean = total/seg_size;
-	double seg_cost = seg_size*seg_mean*seg_mean - 2*seg_mean*total;
+	double seg_cost = seg_size*seg_mean - log(seg_mean)*total;
 	double cost_up_to_t = seg_cost;
 	if(change_candidate != -1){
 	  // special case of no additional penalty for no changes.
