@@ -12,6 +12,7 @@
 ##'   data points 1 and 2). segments has one row for each segment.
 ##' @author Toby Dylan Hocking
 ##' @param x numeric vector of data to fit a Gaussian mean model.
+##' @param weights numeric vector of weights
 ##' @param labels data frame with at least three columns: start, end,
 ##'   changes. start/end should be indices of x, from 1 to
 ##'   length(x). changes should be either 0 or 1. The prediced
@@ -25,7 +26,7 @@
 ##' @param penalty_labeled non-negative penalty constant to use for
 ##'   changes in positive labels. 
 ##' @example inst/examples/LOPART.R
-LOPART <- function
+POISSON_LOPART <- function
 (x, weights, labels, penalty_unlabeled,
   n_updates=length(x),
   penalty_labeled=penalty_unlabeled
@@ -45,7 +46,7 @@ LOPART <- function
       pos.dt[, .(start, end, changes)], neg.dt
     )[start < end][order(start)]
   }
-  out_df <- LOPART_interface(
+  out_df <- POISSON_LOPART_interface(
     x,
     weights,
     labels$start-1L,

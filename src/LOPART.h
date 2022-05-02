@@ -7,7 +7,7 @@
 #define ERROR_NO_DATA 7
 #define ERROR_DATA_MUST_BE_FINITE 8
 
-int LOPART
+int POISSON_LOPART
 (double *input_data,
  double *input_weight,
  int n_data, //N in paper

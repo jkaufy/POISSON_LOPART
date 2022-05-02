@@ -12,7 +12,7 @@ double sum_from_to(double *out_cumsum, int first, int last){
   return total;
 }
 
-int LOPART
+int POISSON_LOPART
 (double *input_data,
  double *input_weight,
  int n_data, //N in paper

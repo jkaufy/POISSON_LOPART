@@ -28,7 +28,7 @@
 //'   is the optimal changepoints (negative numbers are not used).
 //' @author Toby Dylan Hocking
 // [[Rcpp::export]]
-Rcpp::DataFrame LOPART_interface
+Rcpp::DataFrame POISSON_LOPART_interface
 (Rcpp::NumericVector input_data,
  Rcpp::NumericVector input_weight,
  Rcpp::IntegerVector input_label_start,
@@ -53,7 +53,7 @@ Rcpp::DataFrame LOPART_interface
   Rcpp::NumericVector out_cost(n_updates);
   Rcpp::NumericVector out_mean(n_updates);
   Rcpp::IntegerVector out_last_change(n_updates);
-  int status = LOPART
+  int status = POISSON_LOPART
     (&input_data[0],
      &input_weight[0],
      n_data,
